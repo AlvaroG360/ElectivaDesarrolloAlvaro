@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventify - Eventos en Medellín</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-black text-white" style="background-image: url('imagenes/fondo.jpeg'); background-size: cover; background-position: center;">
+    <header class="absolute top-0 left-0 w-full flex justify-between items-center p-6 bg-transparent z-10">
+        <div class="text-3xl font-bold">
+            <a href="index.html">
+                <img src="imagenes/eventify_logo.png" alt="Eventify Logo" class="h-12">
+            </a>
+        </div>
+        <nav>
+            <ul class="flex space-x-8 text-lg">
+                <li><a href="index.html" class="hover:text-gray-400">Inicio</a></li>
+                <li><a href="#eventos" class="hover:text-gray-400">Eventos</a></li>
+                <li><a href="login.html" class="hover:text-gray-400">Iniciar Sesión</a></li>
+                <li><a href="register.html" class="hover:text-gray-400">Registrarse</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="relative h-screen flex flex-col justify-center items-start text-left px-12 bg-cover bg-center">
+        <h1 class="text-6xl font-extrabold">Descubre los mejores eventos en Medellín</h1>
+        <p class="text-xl mt-4 max-w-2xl">Conciertos, festivales, conferencias y más, todo en un solo lugar.</p>
+    </section>
+    
+    <section id="eventos" class="py-24 bg-black text-white">
+        <h2 class="text-4xl font-bold text-center mb-12">Próximos Eventos</h2>
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            <div class="bg-gray-900 rounded-lg overflow-hidden shadow-lg">
+                <img src="evento1.jpg" alt="Evento 1" class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h3 class="text-2xl font-semibold">Concierto en Vivo</h3>
+                    <p class="text-gray-400">Disfruta de una noche increíble con los mejores artistas.</p>
+                </div>
+            </div>
+            <div class="bg-gray-900 rounded-lg overflow-hidden shadow-lg">
+                <img src="evento2.jpg" alt="Evento 2" class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h3 class="text-2xl font-semibold">Festival Gastronómico</h3>
+                    <p class="text-gray-400">Prueba sabores únicos en este festival imperdible.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="py-8 bg-gray-900 text-center">
+        <p>&copy; 2025 Eventify - Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>

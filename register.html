@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventify - Registro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-black text-white">
+    <header class="absolute top-0 left-0 w-full flex justify-between items-center p-6 bg-transparent z-10">
+        <div class="text-3xl font-bold">
+            <a href="index.html">
+                <img src="imagenes/eventify_logo.png" alt="Eventify Logo" class="h-12">
+            </a>
+        </div>
+        <nav>
+            <ul class="flex space-x-8 text-lg">
+                <li><a href="index.html" class="hover:text-gray-400">Inicio</a></li>
+                <li><a href="login.html" class="hover:text-gray-400">Iniciar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="relative h-screen flex flex-col justify-center items-center text-center px-12 bg-cover bg-center" style="background-image: url('auth-bg.jpg');">
+        <div class="bg-black bg-opacity-80 p-12 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-4xl font-extrabold mb-6">Registrarse</h2>
+            <form action="#" method="POST" class="flex flex-col space-y-4">
+                <input type="text" placeholder="Nombre Completo" class="p-3 bg-gray-800 text-white rounded-md focus:outline-none">
+                <input type="email" placeholder="Correo Electrónico" class="p-3 bg-gray-800 text-white rounded-md focus:outline-none">
+                <input type="password" placeholder="Contraseña" class="p-3 bg-gray-800 text-white rounded-md focus:outline-none">
+                <button type="submit" class="bg-gray-500 hover:bg-gray-400 p-3 rounded-md font-bold">Registrarse</button>
+            </form>
+            <p class="mt-4 text-gray-400">¿Ya tienes cuenta? <a href="login.html" class="text-gray-100">Inicia Sesión</a></p>
+        </div>
+    </section>
+    
+    <footer class="py-8 bg-gray-900 text-center">
+        <p>&copy; 2025 Eventify - Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
+
