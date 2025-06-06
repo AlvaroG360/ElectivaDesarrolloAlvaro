@@ -21,14 +21,15 @@
             </ul>
         </nav>
     </header>
-    
+
     <section class="relative h-screen flex flex-col justify-center items-center text-center px-12 bg-cover bg-center" style="background-image: url('auth-bg.jpg');">
         <div class="bg-black bg-opacity-80 p-12 rounded-lg shadow-lg w-full max-w-md">
             <h2 class="text-4xl font-extrabold mb-6">Iniciar Sesión</h2>
-            <form action="#" method="POST" class="flex flex-col space-y-4">
+            <form id="form-login" class="flex flex-col space-y-4">
                 <input type="email" placeholder="Correo Electrónico" class="p-3 bg-gray-800 text-white rounded-md focus:outline-none">
                 <input type="password" placeholder="Contraseña" class="p-3 bg-gray-800 text-white rounded-md focus:outline-none">
                 <button type="submit" class="bg-gray-500 hover:bg-gray-400 p-3 rounded-md font-bold">Entrar</button>
+                <div id="login-error" class="text-red-400 text-sm mt-2 hidden"></div>
             </form>
             <p class="mt-4 text-gray-400">¿No tienes cuenta? <a href="register.html" class="text-gray-100">Regístrate</a></p>
         </div>
@@ -37,5 +38,52 @@
     <footer class="py-8 bg-gray-900 text-center">
         <p>&copy; 2025 Eventify - Todos los derechos reservados.</p>
     </footer>
+
+    <script>
+        const form = document.getElementById("form-login");
+        const errorDiv = document.getElementById("login-error");
+    
+        form.addEventListener("submit", async function(event) {
+            event.preventDefault();
+    
+            const email = form.querySelector("input[type='email']").value.trim();
+            const password = form.querySelector("input[type='password']").value.trim();
+    
+            errorDiv.classList.add("hidden");
+            errorDiv.textContent = "";
+    
+            if (!email || !password) {
+                errorDiv.textContent = "Por favor, completa todos los campos.";
+                errorDiv.classList.remove("hidden");
+                return;
+            }
+    
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ correo: email, contrasena: password })
+                });
+    
+                if (!response.ok) {
+                    const msg = await response.text();
+                    errorDiv.textContent = msg;
+                    errorDiv.classList.remove("hidden");
+                    return;
+                }
+    
+                const usuario = await response.json();
+    
+                // Guardar info en localStorage y redirigir
+                localStorage.setItem('usuario', JSON.stringify(usuario));
+                window.location.href = "/perfil.html";
+    
+            } catch (err) {
+                errorDiv.textContent = "Error al iniciar sesión.";
+                errorDiv.classList.remove("hidden");
+            }
+        });
+    </script>
+    
 </body>
 </html>

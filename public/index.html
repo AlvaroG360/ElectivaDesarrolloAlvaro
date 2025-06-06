@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventify - Eventos en Medellín</title>
+    <link rel="icon" href="/imagenes/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-black text-white" style="background-image: url('imagenes/fondo.jpeg'); background-size: cover; background-position: center;">
+    <header class="absolute top-0 left-0 w-full flex justify-between items-center p-6 bg-transparent z-10">
+        <div class="text-3xl font-bold">
+            <a href="index.html">
+                <img src="/imagenes/eventify_logo.png" alt="Eventify Logo" class="h-12">
+            </a>
+        </div>
+        <nav>
+            <ul class="flex space-x-8 text-lg">
+                <li><a href="index.html" class="hover:text-gray-400">Inicio</a></li>
+                <li><a href="#eventos" class="hover:text-gray-400">Eventos</a></li>
+                <li><a href="login.html" class="hover:text-gray-400">Iniciar Sesión</a></li>
+                <li><a href="register.html" class="hover:text-gray-400">Registrarse</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="relative h-screen flex flex-col justify-center items-start text-left px-12 bg-cover bg-center">
+        <h1 class="text-6xl font-extrabold">Descubre los mejores eventos en Medellín</h1>
+        <p class="text-xl mt-4 max-w-2xl">Conciertos, festivales, conferencias y más, todo en un solo lugar.</p>
+    </section>
+
+    <section id="quienes-somos" class="py-20 bg-gray-950 text-white text-center px-6">
+        <h2 class="text-4xl font-bold mb-6">¿Quiénes Somos?</h2>
+        <p class="max-w-4xl mx-auto text-lg text-gray-400 leading-relaxed">
+            Eventify es una plataforma digital que busca revolucionar la forma en que descubres y vives los eventos en Medellín.
+            Conectamos a los amantes de la música, el arte, la cultura y la tecnología con las mejores experiencias en vivo. 
+            Nuestro equipo está formado por apasionados del entretenimiento que creen que cada evento debe ser inolvidable.
+        </p>
+    </section>
+
+    <section id="que-hacemos" class="py-20 bg-black text-white text-center px-6">
+        <h2 class="text-4xl font-bold mb-6">¿Qué Hacemos?</h2>
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-left">
+            <div>
+                <h3 class="text-2xl font-semibold mb-2">🎟️ Venta de Entradas</h3>
+                <p class="text-gray-400">Compra entradas de manera fácil y segura desde cualquier lugar.</p>
+            </div>
+            <div>
+                <h3 class="text-2xl font-semibold mb-2">📅 Calendario de Eventos</h3>
+                <p class="text-gray-400">Explora próximos conciertos, festivales y charlas organizados por categorías.</p>
+            </div>
+            <div>
+                <h3 class="text-2xl font-semibold mb-2">🔔 Notificaciones Personalizadas</h3>
+                <p class="text-gray-400">Recibe alertas sobre eventos que te interesan, según tus gustos.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gray-900 text-white text-center">
+        <h2 class="text-3xl font-bold mb-4">¿Listo para vivir la experiencia?</h2>
+        <p class="text-lg text-gray-400 mb-6">Regístrate y sé el primero en enterarte de los eventos más épicos.</p>
+        <a href="register.html" class="px-6 py-3 bg-green-600 hover:bg-green-500 text-white rounded text-lg font-semibold transition">Crear Cuenta</a>
+    </section>
+
+    <section id="eventos" class="py-24 bg-black text-white">
+        <h2 class="text-4xl font-bold text-center mb-12">Próximos Eventos</h2>
+
+        <div class="flex justify-center mb-8 space-x-4">
+            <button class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded">Todos</button>
+            <button class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded">Conciertos</button>
+            <button class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded">Festivales</button>
+            <button class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded">Conferencias</button>
+        </div>
+
+        <div id="contenedor-eventos" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            <!-- Aquí se cargarán eventos dinámicamente -->
+        </div>
+    </section>
+
+    <footer class="py-8 bg-gray-900 text-center">
+        <p>&copy; 2025 Eventify - Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        async function cargarEventos() {
+            const contenedor = document.getElementById('contenedor-eventos');
+            try {
+                const respuesta = await fetch('/api/eventos');
+                const eventos = await respuesta.json();
+                contenedor.innerHTML = eventos.map(evento => `
+                    <a onclick="verEvento(${evento.id})" class="cursor-pointer block bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <img src="${evento.imagen || 'evento_default.jpg'}" alt="Evento" class="w-full h-64 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-2">\${evento.nombre}</h3>
+                            <p class="text-gray-400">\${evento.descripcion}</p>
+                        </div>
+                    </a>
+                `).join('');
+            } catch (err) {
+                contenedor.innerHTML = `<p class="text-center text-red-400">No se pudieron cargar los eventos.</p>`;
+            }
+        }
+
+        function verEvento(id) {
+            const usuario = localStorage.getItem('usuario');
+            if (!usuario) {
+                window.location.href = 'login.html';
+            } else {
+                window.location.href = `/evento.html?id=${id}`;
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', cargarEventos);
+    </script>
+</body>
+</html>

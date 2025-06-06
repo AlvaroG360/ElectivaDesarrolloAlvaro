@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Perfil - Eventify</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white min-h-screen flex">
+
+    <!-- Menú lateral -->
+    <aside class="w-64 bg-gray-900 p-6 flex flex-col space-y-6">
+        <div class="text-center">
+            <img src="imagenes/avatar_default.png" class="w-24 h-24 rounded-full mx-auto mb-4" alt="Avatar">
+            <h2 id="nombre-usuario" class="text-xl font-bold">Nombre Usuario</h2>
+            <p id="correo-usuario" class="text-sm text-gray-400">correo@correo.com</p>
+        </div>
+        <nav class="flex-1 mt-6">
+            <ul class="space-y-4 text-lg">
+                <li><a href="#" class="hover:text-gray-400">📄 Perfil</a></li>
+                <li><a href="#" class="hover:text-gray-400">🎟️ Mis Entradas</a></li>
+                <li><a href="#" class="hover:text-gray-400">⚙️ Configuración</a></li>
+                <li><button onclick="cerrarSesion()" class="text-red-400 hover:text-red-300">🔒 Cerrar Sesión</button></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Contenido derecho -->
+    <main class="flex-1 p-8 overflow-y-auto">
+        <h1 class="text-4xl font-bold mb-8">Eventos en Medellín</h1>
+
+        <div id="contenedor-eventos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Aquí se cargan los eventos -->
+        </div>
+    </main>
+
+    <script>
+        // Cargar usuario
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        if (!usuario) {
+            window.location.href = "/login.html";
+        } else {
+            document.getElementById('nombre-usuario').textContent = usuario.nombre;
+            document.getElementById('correo-usuario').textContent = usuario.correo;
+        }
+
+        // Cerrar sesión
+        function cerrarSesion() {
+            localStorage.removeItem('usuario');
+            window.location.href = "/login.html";
+        }
+
+        // Cargar eventos
+        async function cargarEventos() {
+            const contenedor = document.getElementById("contenedor-eventos");
+            try {
+                const res = await fetch("/api/eventos");
+                const eventos = await res.json();
+
+                contenedor.innerHTML = eventos.map(evento => `
+                    <div class="bg-gray-800 rounded-lg shadow hover:shadow-xl transition-shadow">
+                        <img src="${evento.imagen || 'imagenes/evento_default.jpg'}" class="w-full h-48 object-cover rounded-t-lg" alt="Evento">
+                        <div class="p-4">
+                            <h3 class="text-xl font-semibold">${evento.nombre}</h3>
+                            <p class="text-gray-400">${evento.descripcion}</p>
+                            <p class="mt-2 text-sm text-gray-500">${evento.fecha}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                contenedor.innerHTML = `<p class="text-red-400">Error al cargar los eventos.</p>`;
+            }
+        }
+
+        cargarEventos();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Evento</title>
+    <link rel="icon" href="/imagenes/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-black text-white">
+    <header class="p-6 bg-gray-900 text-center">
+        <h1 class="text-3xl font-bold">Detalles del Evento</h1>
+    </header>
+
+    <main class="py-12 px-6 max-w-4xl mx-auto">
+        <div id="evento-detalles" class="bg-gray-800 p-6 rounded-lg shadow-lg">
+            <!-- Aquí se cargará la información del evento -->
+        </div>
+    </main>
+
+    <footer class="py-8 bg-gray-900 text-center">
+        <p>&copy; 2025 Eventify - Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        async function cargarDetallesEvento() {
+            const params = new URLSearchParams(window.location.search);
+            const eventoId = params.get('id'); // Captura el ID del evento desde la URL
+            const contenedor = document.getElementById('evento-detalles');
+
+            try {
+                const respuesta = await fetch(`/api/eventos/${eventoId}`);
+                if (!respuesta.ok) {
+                    throw new Error('No se pudo obtener la información del evento');
+                }
+                const evento = await respuesta.json();
+
+                contenedor.innerHTML = `
+                    <h2 class="text-4xl font-bold mb-4">${evento.nombre}</h2>
+                    <p class="text-gray-400 mb-4">${evento.descripcion}</p>
+                    <p class="text-gray-500 mb-4">Fecha: ${evento.fecha}</p>
+                    <div class="mb-6">
+                        <iframe 
+                            src="https://www.google.com/maps/embed/v1/place?key=TU_API_KEY&q=${encodeURIComponent(evento.ubicacion)}" 
+                            width="100%" height="300" frameborder="0" style="border:0;" allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="mb-6">
+                        <button class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded text-white">Comprar Boletos</button>
+                    </div>
+                    <table class="w-full text-left bg-gray-700 rounded-lg overflow-hidden">
+                        <thead>
+                            <tr class="bg-gray-600">
+                                <th class="px-4 py-2">Categoría</th>
+                                <th class="px-4 py-2">Precio (COP)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${evento.precios.map(precio => `
+                                <tr>
+                                    <td class="px-4 py-2">${precio.categoria}</td>
+                                    <td class="px-4 py-2">${precio.valor.toLocaleString('es-CO')}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (err) {
+                console.error('Error al cargar los detalles del evento:', err);
+                contenedor.innerHTML = `<p class="text-red-400">No se pudo cargar la información del evento.</p>`;
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', cargarDetallesEvento);
+    </script>
+</body>
+</html>
